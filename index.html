@@ -1,0 +1,550 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>민나믿나 (Minnamitna) - 서브컬처 오프라인 통합 서비스</title>
+  <!-- Pretendard WebFont -->
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Mobile Screen Shell (375px centered layout) -->
+  <div class="app-simulator" id="app">
+
+    <!-- Top App Header -->
+    <header class="app-header" id="app-header">
+      <div class="app-header__brand" id="brand-logo" role="button" aria-label="홈으로 이동">
+        <span>✨</span> 민나믿나
+      </div>
+      <div class="app-header__actions">
+        <button class="icon-btn" id="btn-header-search" aria-label="통합 검색">🔍</button>
+        <button class="icon-btn" id="btn-header-alarm" aria-label="알림 목록">🔔</button>
+      </div>
+    </header>
+
+    <!-- Main Content Area with Routing Views -->
+    <main class="app-main" id="app-main">
+
+      <!-- ================= 1. HOME SCREEN ================= -->
+      <section class="screen-view is-active" id="screen-home" aria-label="홈 화면">
+        <!-- User Location / Context bar -->
+        <div style="padding: 12px 16px 4px; display: flex; align-items: center; justify-content: space-between;">
+          <span style="font-size: 13px; font-weight: 600; color: var(--gray-700);">📍 서울 / 수도권 전체</span>
+          <button class="section-header__link" id="btn-manage-keywords">관심 키워드 편집</button>
+        </div>
+
+        <!-- User Favorite Keywords Horizontal Chip Scroll -->
+        <div class="chip-scroll" id="home-keyword-chips">
+          <!-- Dynamic Keyword Chips -->
+        </div>
+
+        <!-- Section: Today's / Recommended Events -->
+        <div class="section-header">
+          <h2 class="section-header__title">오늘/이번 주 추천 행사 🔥</h2>
+          <button class="section-header__link" data-navigate="explore">전체보기</button>
+        </div>
+        <div id="home-recommended-events">
+          <!-- Rendered Event Cards -->
+        </div>
+
+        <!-- Section: Quick Saved Events Bar -->
+        <div class="section-header" style="margin-top: 8px;">
+          <h2 class="section-header__title">내 저장한 행사 📌</h2>
+          <button class="section-header__link" data-navigate="my">목록보기</button>
+        </div>
+        <div id="home-saved-events" style="padding: 0 16px 8px;">
+          <!-- Saved items summary -->
+        </div>
+
+        <!-- Section: VTuber & Collab Cafe Highlights -->
+        <div class="section-header" style="margin-top: 8px;">
+          <h2 class="section-header__title">버튜버 & 콜라보 카페 🍰</h2>
+        </div>
+        <div id="home-vtuber-events">
+          <!-- VTuber Cards -->
+        </div>
+
+        <!-- Section: Upcoming Theatrical Anime & Figures -->
+        <div class="section-header" style="margin-top: 8px;">
+          <h2 class="section-header__title">극장판 개봉 & 피규어 발매 🎬</h2>
+        </div>
+        <div id="home-subculture-events">
+          <!-- Movie & Figure Cards -->
+        </div>
+      </section>
+
+      <!-- ================= 2. EXPLORE SCREEN ================= -->
+      <section class="screen-view" id="screen-explore" aria-label="탐색 화면">
+        <!-- Integrated Search Bar -->
+        <div class="search-bar">
+          <span>🔍</span>
+          <input type="search" class="search-bar__input" id="explore-search-input" placeholder="행사명, 부스, 작품명, 캐릭터 검색...">
+          <button id="btn-clear-search" style="background:none; border:none; color:var(--gray-400); cursor:pointer;">✕</button>
+        </div>
+
+        <!-- Category & Filter Chips -->
+        <div class="chip-scroll" id="explore-category-chips">
+          <!-- Dynamic Category Chips -->
+        </div>
+
+        <!-- Secondary Filter Controls (Status & Sort) -->
+        <div style="display: flex; gap: 8px; padding: 4px 16px 12px; overflow-x: auto;">
+          <select id="filter-region" style="padding: 6px 10px; border-radius: 999px; border: 1px solid var(--gray-300); font-size: 12px; background: white; font-family: inherit;">
+            <option value="all">전체 지역</option>
+            <option value="kintex">일산 KINTEX</option>
+            <option value="setec">서울 SETEC</option>
+            <option value="coex">서울 COEX</option>
+            <option value="hongdae">홍대/마포</option>
+          </select>
+          <select id="filter-status" style="padding: 6px 10px; border-radius: 999px; border: 1px solid var(--gray-300); font-size: 12px; background: white; font-family: inherit;">
+            <option value="all">전체 일정</option>
+            <option value="ongoing">진행 중</option>
+            <option value="upcoming">예정</option>
+            <option value="ended">종료</option>
+          </select>
+          <select id="filter-sort" style="padding: 6px 10px; border-radius: 999px; border: 1px solid var(--gray-300); font-size: 12px; background: white; font-family: inherit;">
+            <option value="recommended">추천순</option>
+            <option value="date">가까운 날짜순</option>
+            <option value="popular">인기순</option>
+          </select>
+        </div>
+
+        <!-- Explore Results List -->
+        <div id="explore-results-list">
+          <!-- Dynamic Filtered Event Cards -->
+        </div>
+      </section>
+
+      <!-- ================= 3. TARGET PILGRIMAGE SCREEN ================= -->
+      <section class="screen-view" id="screen-pilgrimage" aria-label="타겟 순례 화면">
+        <div style="padding: 16px 16px 8px;">
+          <h2 style="font-size: 20px; font-weight: 800;">타겟 순례 (동선 최적화) 🗺️</h2>
+          <p style="font-size: 13px; color: var(--gray-600); margin-top: 4px;">
+            방문할 부스와 출입구를 설정하면 최적의 추천 이동 순서를 계산합니다.
+          </p>
+        </div>
+
+        <!-- Event Selector -->
+        <div style="padding: 0 16px 12px;">
+          <label style="font-size: 12px; font-weight: 600; color: var(--gray-700); display: block; margin-bottom: 4px;">행사 선택</label>
+          <select id="pilgrimage-event-select" style="width: 100%; height: 44px; padding: 0 12px; border-radius: 12px; border: 1px solid var(--gray-300); font-size: 14px; font-family: inherit; background: white;">
+            <!-- Options populated from Data -->
+          </select>
+        </div>
+
+        <!-- Entrance / Exit Config -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px 12px;">
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: var(--gray-500);">출입구 설정</label>
+            <select id="pilgrimage-entrance" style="width: 100%; height: 38px; border-radius: 8px; border: 1px solid var(--gray-300); font-size: 13px; padding: 0 8px; background: white;">
+              <option value="gate-1">제1출입구 (3홀 정문)</option>
+              <option value="gate-2">제2출입구 (4홀 측문)</option>
+            </select>
+          </div>
+          <div>
+            <label style="font-size: 11px; font-weight: 600; color: var(--gray-500);">최종 퇴장구</label>
+            <select id="pilgrimage-exit" style="width: 100%; height: 38px; border-radius: 8px; border: 1px solid var(--gray-300); font-size: 13px; padding: 0 8px; background: white;">
+              <option value="gate-1">제1출입구 (3홀 정문)</option>
+              <option value="gate-3">제3출입구 (5홀 남문)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Add Booth Action & Nonstop Road Toggle -->
+        <div style="padding: 0 16px 16px; display: flex; gap: 8px;">
+          <button class="btn btn--primary btn--full btn--sm" id="btn-generate-route">
+            🚀 추천 동선 재생성
+          </button>
+        </div>
+
+        <!-- Pilgrimage Timeline / Route Steps (Nonstop Road) -->
+        <div class="section-header" style="padding-top: 0;">
+          <h3 class="section-header__title" style="font-size: 15px;">논스톱 로드 순서 & 실시간 재고 ⏱️</h3>
+          <span style="font-size: 11px; color: var(--emerald-500); font-weight: 600;">실시간 제보 연동됨</span>
+        </div>
+
+        <div class="pilgrimage-flow" id="pilgrimage-booth-list">
+          <!-- Dynamically sorted booth steps with checkboxes and status badges -->
+        </div>
+      </section>
+
+      <!-- ================= 4. KAMIOSHI & OFF-RECORD CHAT SCREEN ================= -->
+      <section class="screen-view" id="screen-kamioshi" aria-label="카미오시 커뮤니티 화면">
+        <!-- Community Header Tabs (카미오시 / 오프레코 챗) -->
+        <div style="display: flex; border-bottom: 1px solid var(--gray-200); background: white;">
+          <button class="tab-btn is-active" id="tab-btn-kamioshi" style="flex: 1; height: 48px; border: none; background: none; font-weight: 700; font-size: 14px; border-bottom: 2px solid var(--primary); color: var(--primary); cursor: pointer;">
+            카미오시 팬보드
+          </button>
+          <button class="tab-btn" id="tab-btn-offrecord" style="flex: 1; height: 48px; border: none; background: none; font-weight: 600; font-size: 14px; color: var(--gray-500); cursor: pointer;">
+            오프레코 챗 (검증 Q&A)
+          </button>
+        </div>
+
+        <!-- Community Filter Chips (인기, 최신, 후기, 잡담, 질문) -->
+        <div id="kamioshi-view-container">
+          <div class="chip-scroll" style="padding: 8px 16px;">
+            <button class="filter-chip is-active" data-post-filter="all">전체</button>
+            <button class="filter-chip" data-post-filter="popular">인기 🔥</button>
+            <button class="filter-chip" data-post-filter="review">행사 후기</button>
+            <button class="filter-chip" data-post-filter="info">정보 공유</button>
+            <button class="filter-chip" data-post-filter="talk">잡담/소통</button>
+          </div>
+
+          <!-- Write Post Bar / Floating Action -->
+          <div style="padding: 0 16px 12px; display: flex; gap: 8px;">
+            <button class="btn btn--outline btn--full btn--sm" id="btn-open-create-post">
+              ✏️ 취향 맞는 팬들과 이야기 나누기
+            </button>
+          </div>
+
+          <!-- Posts List -->
+          <div id="kamioshi-posts-list">
+            <!-- Dynamic Community Post Cards -->
+          </div>
+        </div>
+
+        <!-- Off-record Chat Q&A Container -->
+        <div id="offrecord-view-container" style="display: none;">
+          <div style="padding: 12px 16px; background: var(--blue-50); margin: 12px 16px; border-radius: 12px;">
+            <p style="font-size: 12px; color: var(--primary); font-weight: 600;">
+              🛡️ 오프레코 챗 가이드: 단순 루머가 아닌 공식 출처 및 영수증/현장 인증 기반의 검증된 서브컬처 Q&A를 제공합니다.
+            </p>
+          </div>
+          <div style="padding: 0 16px 12px;">
+            <button class="btn btn--primary btn--full btn--sm" id="btn-ask-question">
+              ❓ 궁금한 현장/행사 정보 질문하기
+            </button>
+          </div>
+          <div id="offrecord-qa-list" style="padding: 0 16px 16px;">
+            <!-- Rendered Verified Q&A Cards -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 5. MY PAGE SCREEN ================= -->
+      <section class="screen-view" id="screen-my" aria-label="마이 페이지">
+        <!-- User Profile Card -->
+        <div style="padding: 20px 16px; display: flex; align-items: center; gap: 16px; border-bottom: 1px solid var(--gray-100);">
+          <img src="https://api.dicebear.com/7.x/bottts/svg?seed=user77" alt="프로필 아바타" style="width: 56px; height: 56px; border-radius: 999px; background: var(--gray-100); border: 2px solid var(--primary);">
+          <div>
+            <h2 style="font-size: 18px; font-weight: 700;">오시러버 님</h2>
+            <p style="font-size: 12px; color: var(--gray-500); margin-top: 2px;">서브컬처 순례 등급: 열정 프로모터 ⭐</p>
+          </div>
+        </div>
+
+        <!-- My Action Hub Navigation Grid -->
+        <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; padding: 16px;">
+          <!-- Count Cash Card -->
+          <div class="select-card" id="btn-open-countcash" style="background: var(--blue-50); border-color: var(--blue-100); text-align: left; padding: 14px;">
+            <div style="font-size: 24px; margin-bottom: 6px;">💰</div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--black);">카운트 캐시</div>
+            <div style="font-size: 11px; color: var(--gray-600); margin-top: 2px;">행사 예산 & 굿즈 계산기</div>
+          </div>
+
+          <!-- Oshi Theme Labs Card -->
+          <div class="select-card" id="btn-open-themelabs" style="background: #FAF5FF; border-color: #F3E8FF; text-align: left; padding: 14px;">
+            <div style="font-size: 24px; margin-bottom: 6px;">🧪</div>
+            <div style="font-weight: 700; font-size: 15px; color: var(--black);">오시 테마 랩스</div>
+            <div style="font-size: 11px; color: var(--gray-600); margin-top: 2px;">행사 사진 & 지출 타임라인</div>
+          </div>
+        </div>
+
+        <!-- Saved Events Section in My Page -->
+        <div class="section-header">
+          <h3 class="section-header__title">내가 저장한 행사 (<span id="my-saved-count">0</span>)</h3>
+        </div>
+        <div id="my-saved-events-list">
+          <!-- Rendered Saved Event Cards -->
+        </div>
+
+        <!-- Settings & Guardian Management -->
+        <div style="padding: 16px; border-top: 1px solid var(--gray-100); margin-top: 16px;">
+          <h4 style="font-size: 13px; font-weight: 700; color: var(--gray-500); margin-bottom: 8px;">보안 및 계정 관리</h4>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            <button class="btn btn--secondary btn--full btn--sm" id="btn-manage-guardian" style="justify-content: space-between;">
+              <span>🛡️ 오시 가디언 (신고/차단 목록)</span>
+              <span>›</span>
+            </button>
+            <button class="btn btn--secondary btn--full btn--sm" id="btn-reset-prototype" style="justify-content: space-between; color: var(--rose-500);">
+              <span>🔄 프로토타입 데이터 초기화</span>
+              <span>›</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 6. EVENT DETAIL MODAL / FULL VIEW ================= -->
+      <section class="detail-view" id="view-event-detail" aria-label="행사 상세 화면">
+        <div style="position: sticky; top: 0; background: white; z-index: 65; display: flex; align-items: center; justify-content: space-between; height: 50px; padding: 0 16px; border-bottom: 1px solid var(--gray-100);">
+          <button class="icon-btn" id="btn-close-detail" aria-label="뒤로가기">←</button>
+          <span style="font-weight: 700; font-size: 15px;">행사 상세 정보</span>
+          <button class="icon-btn" id="btn-detail-share" aria-label="공유하기">🔗</button>
+        </div>
+
+        <img class="detail-view__hero" id="detail-img" src="" alt="행사 대표 이미지">
+
+        <div class="detail-view__body">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
+            <span class="status-badge status-badge--official" id="detail-verification">공식 확인</span>
+            <span style="font-size: 12px; color: var(--gray-500);" id="detail-organizer">주최사</span>
+          </div>
+
+          <h1 style="font-size: 20px; font-weight: 800; line-height: 1.3;" id="detail-title">행사 타이틀</h1>
+
+          <div style="margin: 16px 0; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 14px;">
+            <div style="font-size: 13px; margin-bottom: 6px;">📅 <strong id="detail-date">일정</strong></div>
+            <div style="font-size: 13px; margin-bottom: 6px;">📍 <strong id="detail-location">장소</strong></div>
+            <div style="font-size: 13px;">🔗 <a id="detail-link" href="#" target="_blank" style="color: var(--primary); text-decoration: underline;">공식 웹사이트 바로가기</a></div>
+          </div>
+
+          <div style="margin-bottom: 16px;">
+            <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 8px;">행사 소개</h3>
+            <p style="font-size: 13px; color: var(--gray-700); line-height: 1.5;" id="detail-desc"></p>
+          </div>
+
+          <div style="margin-bottom: 20px;">
+            <div class="section-header" style="padding: 0 0 8px;">
+              <h3 class="section-header__title" style="font-size: 16px;">참여 부스 및 재고 현황</h3>
+              <span style="font-size: 11px; color: var(--gray-500);" id="detail-booth-count">0개 부스</span>
+            </div>
+            <div id="detail-booths-list">
+              <!-- Rendered booth cards -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Sticky Bottom CTA Bar in Detail -->
+        <div class="detail-view__cta-bar">
+          <button class="btn btn--secondary" id="btn-detail-save" style="flex: 1;">
+            📌 <span id="detail-save-text">저장</span>
+          </button>
+          <button class="btn btn--primary" id="btn-detail-add-pilgrimage" style="flex: 2;">
+            🗺️ 타겟 순례에 추가
+          </button>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ================= 5-TAB BOTTOM NAVIGATION ================= -->
+    <nav class="bottom-nav" id="bottom-nav">
+      <button class="bottom-nav__item is-active" data-target="screen-home">
+        <span class="bottom-nav__icon">🏠</span>
+        <span>홈</span>
+      </button>
+      <button class="bottom-nav__item" data-target="screen-explore">
+        <span class="bottom-nav__icon">🧭</span>
+        <span>탐색</span>
+      </button>
+      <button class="bottom-nav__item" data-target="screen-pilgrimage">
+        <span class="bottom-nav__icon">🗺️</span>
+        <span>순례</span>
+      </button>
+      <button class="bottom-nav__item" data-target="screen-kamioshi">
+        <span class="bottom-nav__icon">💬</span>
+        <span>카미오시</span>
+      </button>
+      <button class="bottom-nav__item" data-target="screen-my">
+        <span class="bottom-nav__icon">👤</span>
+        <span>마이</span>
+      </button>
+    </nav>
+
+    <!-- ================= ONBOARDING OVERLAY ================= -->
+    <section class="onboarding-screen" id="view-onboarding" style="display: none;">
+      <!-- Step 1: Welcome -->
+      <div class="onboarding-step is-active" id="onboarding-step-1">
+        <div class="onboarding-step__hero">
+          <div style="font-size: 48px; margin-bottom: 16px;">✨</div>
+          <h1 class="onboarding-step__hero-title">민나믿나</h1>
+          <p class="onboarding-step__hero-desc">
+            좋아하는 것을 더 쉽게 만나러 가는 방법.<br>
+            서브컬처 행사, 특전, 굿즈, 동선을 한눈에!
+          </p>
+        </div>
+        <button class="btn btn--primary btn--full" id="btn-onboarding-step1-next">
+          시작하기
+        </button>
+      </div>
+
+      <!-- Step 2: Category Select -->
+      <div class="onboarding-step" id="onboarding-step-2">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">관심 카테고리 선택</h2>
+          <p style="font-size: 13px; color: var(--gray-600);">평소 자주 찾는 서브컬처 분야를 선택해주세요.</p>
+          <div class="onboarding-grid" id="onboarding-category-grid">
+            <div class="select-card is-selected" data-val="event">🎪 오프라인 행사</div>
+            <div class="select-card is-selected" data-val="anime">🎬 극장판 애니</div>
+            <div class="select-card is-selected" data-val="vtuber">🎤 버튜버</div>
+            <div class="select-card" data-val="figure">🗿 피규어/프라</div>
+            <div class="select-card is-selected" data-val="goods">🛍️ 한정 굿즈</div>
+            <div class="select-card" data-val="collab">☕ 콜라보 카페</div>
+          </div>
+        </div>
+        <button class="btn btn--primary btn--full" id="btn-onboarding-step2-next">
+          다음 (키워드 선택)
+        </button>
+      </div>
+
+      <!-- Step 3: Keywords Select -->
+      <div class="onboarding-step" id="onboarding-step-3">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">관심 키워드 선택</h2>
+          <p style="font-size: 13px; color: var(--gray-600);">최소 3개 이상 선택해주세요 (맞춤 추천용).</p>
+          <div style="display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px;" id="onboarding-keyword-chips">
+            <!-- Dynamic Keyword chips for onboarding -->
+          </div>
+        </div>
+        <button class="btn btn--primary btn--full" id="btn-onboarding-step3-next">
+          다음 (권한 설정)
+        </button>
+      </div>
+
+      <!-- Step 4: Permission & Finish -->
+      <div class="onboarding-step" id="onboarding-step-4">
+        <div>
+          <h2 style="font-size: 20px; font-weight: 800; margin-bottom: 4px;">서비스 이용 권한 안내</h2>
+          <p style="font-size: 13px; color: var(--gray-600); margin-bottom: 24px;">원활한 행사 현장 안내를 위해 권한을 요청합니다.</p>
+          
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span style="font-size: 24px;">🔔</span>
+              <div>
+                <h4 style="font-size: 14px; font-weight: 700;">알림 권한 (선택)</h4>
+                <p style="font-size: 12px; color: var(--gray-500);">한정 굿즈 재고 변동 및 일정 임박 알림</p>
+              </div>
+            </div>
+            <div style="display: flex; gap: 12px; align-items: center;">
+              <span style="font-size: 24px;">📍</span>
+              <div>
+                <h4 style="font-size: 14px; font-weight: 700;">위치 권한 (선택)</h4>
+                <p style="font-size: 12px; color: var(--gray-500);">행사장 주변 가까운 일정 및 이동 시간 안내</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 8px;">
+          <button class="btn btn--primary btn--full" id="btn-onboarding-finish">권한 허용하고 완료</button>
+          <button class="btn btn--secondary btn--full" id="btn-onboarding-skip">건너뛰기 (Skip)</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= COUNT CASH (BUDGET) BOTTOM SHEET ================= -->
+    <div class="bottom-sheet-overlay" id="sheet-countcash">
+      <div class="bottom-sheet">
+        <div class="bottom-sheet__handle"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 18px; font-weight: 800;">카운트 캐시 (예산 플래너) 💰</h3>
+          <button class="icon-btn" id="btn-close-countcash">✕</button>
+        </div>
+        <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 12px;" id="countcash-event-name">행사: AGF 2026</p>
+
+        <!-- Summary Banner -->
+        <div class="budget-summary" style="margin: 0 0 16px;">
+          <div class="budget-summary__label">현재 계획 총 지출액</div>
+          <div class="budget-summary__total" id="budget-total-val">0원</div>
+          <div class="budget-summary__stats">
+            <span>목표 예산: <strong id="budget-cap-val">150,000원</strong></span>
+            <span>남은 잔액: <strong id="budget-remain-val">0원</strong></span>
+          </div>
+        </div>
+
+        <!-- Budget Item Inputs -->
+        <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px;">
+          <div class="budget-item-card">
+            <span>🎫 티켓 예매비</span>
+            <input type="number" id="input-budget-ticket" style="width: 90px; text-align: right; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--gray-300);" value="27000">
+          </div>
+          <div class="budget-item-card">
+            <span>🚇 왕복 교통비</span>
+            <input type="number" id="input-budget-transport" style="width: 90px; text-align: right; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--gray-300);" value="12000">
+          </div>
+          <div class="budget-item-card">
+            <span>🍱 현장 식비/음료</span>
+            <input type="number" id="input-budget-food" style="width: 90px; text-align: right; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--gray-300);" value="15000">
+          </div>
+        </div>
+
+        <!-- Planned Goods List -->
+        <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">구매 예정 굿즈 목록</h4>
+        <div id="budget-goods-list" style="display: flex; flex-direction: column; gap: 6px; margin-bottom: 12px;">
+          <!-- Dynamically added goods rows -->
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 16px;">
+          <input type="text" id="input-new-good-name" placeholder="굿즈 품목명 (예: 아크릴 스탠드)" style="flex: 2; padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 13px;">
+          <input type="number" id="input-new-good-price" placeholder="금액" style="flex: 1; padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 13px;">
+          <button class="btn btn--secondary btn--sm" id="btn-add-goods">추가</button>
+        </div>
+
+        <button class="btn btn--primary btn--full" id="btn-save-budget">예산 저장 완료</button>
+      </div>
+    </div>
+
+    <!-- ================= OSHI THEME LABS (RECORDS) BOTTOM SHEET ================= -->
+    <div class="bottom-sheet-overlay" id="sheet-themelabs">
+      <div class="bottom-sheet">
+        <div class="bottom-sheet__handle"></div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+          <h3 style="font-size: 18px; font-weight: 800;">오시 테마 랩스 (활동 타임라인) 🧪</h3>
+          <button class="icon-btn" id="btn-close-themelabs">✕</button>
+        </div>
+        <p style="font-size: 12px; color: var(--gray-600); margin-bottom: 16px;">
+          방문했던 서브컬처 행사, 전리품 사진, 사용 금액을 나만의 소중한 기록으로 남겨보세요.
+        </p>
+
+        <!-- New Log Form -->
+        <div style="background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 12px; padding: 12px; margin-bottom: 16px;">
+          <h4 style="font-size: 13px; font-weight: 700; margin-bottom: 8px;">새로운 행사 기록 남기기</h4>
+          <input type="text" id="input-lab-title" placeholder="행사명 (예: 제6회 일러스타 페스)" style="width: 100%; padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 13px; margin-bottom: 8px;">
+          <textarea id="input-lab-review" placeholder="생생한 현장 후기를 적어주세요..." rows="2" style="width: 100%; padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 13px; margin-bottom: 8px; font-family: inherit;"></textarea>
+          <div style="display: flex; gap: 8px; margin-bottom: 8px;">
+            <input type="number" id="input-lab-amount" placeholder="총 지출 금액 (원)" style="flex: 1; padding: 8px 12px; border: 1px solid var(--gray-300); border-radius: 8px; font-size: 13px;">
+            <button class="btn btn--primary btn--sm" id="btn-submit-lab-log">기록 저장</button>
+          </div>
+        </div>
+
+        <!-- Existing Records Timeline -->
+        <div id="themelabs-records-container" style="display: flex; flex-direction: column; gap: 12px;">
+          <!-- Dynamic Theme Labs timeline items -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= GUARDIAN (REPORT / BLOCK) MODAL ================= -->
+    <div class="modal-overlay" id="modal-guardian">
+      <div class="modal-content">
+        <h3 style="font-size: 17px; font-weight: 800; margin-bottom: 4px;">🛡️ 오시 가디언 신고 및 제재</h3>
+        <p style="font-size: 12px; color: var(--gray-500); margin-bottom: 12px;">
+          신고된 내용은 운영 가이드라인에 따라 검토 후 단계별 조치가 진행됩니다.
+        </p>
+
+        <label style="font-size: 12px; font-weight: 600; display: block; margin-bottom: 4px;">신고 사유 선택</label>
+        <select id="select-report-reason" style="width: 100%; height: 38px; border-radius: 8px; border: 1px solid var(--gray-300); font-size: 13px; margin-bottom: 12px; padding: 0 8px;">
+          <option value="spam">도배 및 광고성 게시물</option>
+          <option value="hate">욕설 및 혐오 표현</option>
+          <option value="fake">허위 정보 및 날조 제보</option>
+          <option value="fraud">사기 의심 및 부적절한 암표 거래</option>
+          <option value="harass">특정인 또는 특정 장르 악성 저격</option>
+        </select>
+
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn--secondary btn--full btn--sm" id="btn-cancel-report">취소</button>
+          <button class="btn btn--primary btn--full btn--sm" id="btn-confirm-report">신고 접수</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+  </div>
+
+  <!-- Scripts -->
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
